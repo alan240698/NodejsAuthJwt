@@ -1,6 +1,6 @@
 import express from "express";
 
-import usersService from "../../services/users.service";
+import usersService from "../services/users.service";
 
 import debug from "debug";
 import argon2 from "argon2";

@@ -22,7 +22,7 @@ npm i argon2
 `Create new below:`
 
 1.  `**common/interfaces/crud.interface.ts**`
-2.  `**services/users.service.ts**`
+2.  `**users/services/users.service.ts**`
 3.  `**users/controllers/users.controller.ts**`
 4.  `**users/middleware/users.middleware.ts**`
 
