@@ -11,7 +11,7 @@ import * as winston from "winston";
 import * as expressWinston from "express-winston";
 import cors from "cors";
 import debug from "debug";
-
+import helmet from "helmet";
 import { CommonRoutesConfig } from "./common/common.routes.config";
 import { UsersRoutes } from "./users/users.routes.config";
 
@@ -26,6 +26,7 @@ const debugLog: debug.IDebugger = debug("app");
 
 app.use(express.json());
 app.use(cors());
+app.use(helmet());
 
 const loggerOptions: expressWinston.LoggerOptions = {
     transports: [new winston.transports.Console()],
@@ -38,6 +39,9 @@ const loggerOptions: expressWinston.LoggerOptions = {
 
 if (!process.env.DEBUG) {
     loggerOptions.meta = false; // when not debugging, make terse
+    if (typeof global.it === 'function') {
+        loggerOptions.level = 'http'; // for non-debug test runs, squelch entirely
+    }
 }
 
 app.use(expressWinston.logger(loggerOptions));
@@ -50,7 +54,7 @@ app.get("/", (req: express.Request, res: express.Response) => {
     res.status(200).send(runningMessage);
 });
 
-server.listen(port, () => {
+export default server.listen(port, () => {
     routes.forEach((route: CommonRoutesConfig) => {
         debugLog(`Routes configured for ${route.getName()}`);
     });
